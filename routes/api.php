@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+/*
+| CRUD Empresa, prefix api
+*/
+
+Route::get('empresas', 'App\Http\Controllers\Api\EmpresaController@index');
+Route::post('empresas', 'App\Http\Controllers\Api\EmpresaController@save');
+Route::get('empresa', 'App\Http\Controllers\Api\EmpresaController@show');
+Route::put('empresas', 'App\Http\Controllers\Api\EmpresaController@update');
+Route::delete('empresas', 'App\Http\Controllers\Api\EmpresaController@delete');
+
+
