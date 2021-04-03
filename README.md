@@ -1,62 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Supuestos.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+* Se trabaja con sistema operativo Linux.
+* Se tiene instalado las siguientes aplicaciones:
+  * PHP composer.
+  * GIT
+  * Se debe trabajar en la carpeta de trabajo HOME (~/)
+ 
+## Contenedor Laravel PHP
 
-## About Laravel
+Seguir los siguientes pasos:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+cd ~
+git clone https://github.com/laravel/laravel.git laravel-app
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```
+cd laravel-app
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A continuacion instalamos en la [imagen]() docker de la aplicacion en Laravel composer para evitar instalarla localmente en el S.O.
 
-## Learning Laravel
+```
+docker pull composer
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Copiamos el contenido del directorio de laravel-app al contenedor y la carpeta vendor de laravel se copie donde corresponda.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+docker run --rm -e $(pwd):/app composer install
+```
 
-## Laravel Sponsors
+Establecemos los permisos del usuario actual que esta utilizando en toda la carpeta (debe tener acceso sudo):
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+sudo chown -R $USER:$USER ~/laravel-app
+```
 
-### Premium Partners
+## Creación de docker-compose.yml
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+Defeniremos la comunicación entre contenedores, los directorios "bind" con el host y la configuración en modo bridge para la comunicación entre sí.
 
-## Contributing
+Para simplificar, crearemos tres contenedores.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+a) Para la aplicación
+b) Para el nginx
+c) Para la base de datos.
 
-## Code of Conduct
+Ver archivo docker-compose.yml en la raiz del proyecto con la especificación app, webserver y bd respectivamente.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* El archivo que contiene los datos de la bd mysql se llama dbenviame
+* /var/www enlazado al directorio ~/laravel-app que permite que la app se monte en /var/www
+* Archivo de configuración ubicado en host ~/laravel-app/php/local.ini enlazado a /usr/local/etc/php/conf.d/local.ini
+* Archivo my.cnf ubicado en ~/laravel-app/mysql/my.cnf enlazado con /etc/mysql/my.cnf en el contenedor nginx.
 
-## Security Vulnerabilities
+## Creación de archivo Dockerfile para generar el contenedor de aplicación Laravel.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Es necesario crear un contenedor Dockerfile el que contendrá los pasos necesarios para que laravel entre en funcionamiento con:
 
-## License
+* Una imagen debian que contiene PHP-FPM FastCGI.
+* Las librerias o paquetes necesarios: mcrypt, pdo_mysql, mbstring e imagick
+* Establecemos usuario www para seguridad extra (en vez de root)
+* Exponemos el puerto 9000 la app.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Permisos en la bd al usuario configurado.
+
+```
+docker-compose exec db bash
+```
+
+```
+GRANT ALL ON enviame.* TO 'enviame'@'%' IDENTIFIED BY 'enviame_pass';
+```
+
+```
+docker-compose exec app php artisan migrate
+docker-compose exec app php artisan config:cache
+```
+
+# Creacion de faker
+
+Este paso no se detallará pero es como sigue:
+
+* Creamos un modelo Empresa, con id y nombre.
+* Creamos un factory y le agregamos un faker.
+* Creamos una ruta en web.php /empresa
+
+Luego llamamos a la url en un navegados
+
+> http://localhost/empresa
+
+y tenemos nuestro faker creado en nuestra bd.
+
+# CRUD.
+
+Con Postman pueden generar, segun el verbo HTTP, ejemplos.
+
+* GET (Todas las empresas): http://localhost/api/empresas
+* GET (Una empresa): http://localhost/api/empresa?id=1
+* POST (Crear una empresa): http://localhost/api/empresas
+  * key: nombre
+  * value: Unimarc
+* UPDATE (Actualizar una empresa): http://localhost/api/empresas 
+  * key: id, value: <id-actualizar>
+  * key: nombre, value: Los Mercantes
+* DELETE (Eliminar una empresa): http://localhost/api/empresas
+  * key: id, value: <id-eliminar>
+ 
+## Notas
+
+* Mysql fallo al iniciar en la version latest y en la 5.2.X, entonces, para simplificar, usamos postgres.
+* Lo anterior implica tambien cambiar configuraciones de instalacion de la app en el dockerfile para que incluya el pdo para postgres.
+* Luego en Debian no existian candidatos para pdo-pgsql en laravel.
+* Forzamos la reinstalacion con la version de mysql 5.7.22
+* Lidiar con el error empty continuation line in Dockerfile
+* composer en laravel me obligo a subir a la version php 7.3 y tuve que sacar la extensión zip por fallos en la compilacion.
+
