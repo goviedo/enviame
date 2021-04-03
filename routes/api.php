@@ -25,4 +25,14 @@ Route::get('empresa', 'App\Http\Controllers\Api\EmpresaController@show');
 Route::put('empresas', 'App\Http\Controllers\Api\EmpresaController@update');
 Route::delete('empresas', 'App\Http\Controllers\Api\EmpresaController@delete');
 
+/*
+| Cadena de Texto iguales al reves
+*/
+Route::post('palindrome', 'App\Http\Controllers\Api\CadenaTextoController@index');
+
+/*
+| Persistencia
+*/
+Route::post('persistir', 'App\Http\Controllers\Api\PersistirController@persistir');
+
 
