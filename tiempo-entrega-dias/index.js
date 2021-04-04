@@ -25,7 +25,7 @@ function DiasFactory() {
   function DiaUno(kilometros) {
     return new Dia(kilometros,1); 
   }
-  
+
   function DiaDos(kilometros) {
     return new Dia(kilometros,2); 
   }
@@ -41,9 +41,9 @@ function DiasFactory() {
 }
 
 
-function numerosAleatorios() {
+function numerosAleatorios(cantidad) {
   let kilometrosAleatorios = [];
-  let cantidadNumeros = 15;
+  let cantidadNumeros = cantidad;
 
   for(let i=0;i<=cantidadNumeros;i++) {
     kilometrosAleatorios.push(Math.floor(Math.random()*2000));
@@ -52,16 +52,28 @@ function numerosAleatorios() {
   return kilometrosAleatorios;
 }
 
-var fact = new DiasFactory();
-var d = numerosAleatorios();
+function salida(d) {
 
-d.forEach((k)=>{
-  var a = fact.calcularDias(k); 
-  if(a.Kilometros<100) {
-    console.log('Se entrega en el mismo día la entrega de ' + a.Kilometros + ' kilometros');
-  } else {
-    console.log('Se demora ' + a.Dias + ' días en la entrega de ' + a.Kilometros + ' kilometros');
-  }
-});
+  d.forEach((k)=>{
+    var a = fact.calcularDias(k); 
+    if(a.Kilometros<100) {
+      console.log('Se entrega en el mismo día la entrega de ' + a.Kilometros + ' kilometros');
+    } else {
+      console.log('Se demora ' + a.Dias + ' días en la entrega de ' + a.Kilometros + ' kilometros');
+    }
+  });
+}
 
+var argumentos = process.argv.slice(2);
+
+if(argumentos.length<=0) {
+  console.log('Por favor establezca la cantidad aleatoria a revisar, mayor a 1');
+} else {
+
+
+  var fact = new DiasFactory();
+  var d = numerosAleatorios(argumentos[0]);
+
+  salida(d);
+}
 
