@@ -33,11 +33,6 @@ class EmpresaController extends Controller {
       $id = $request->input('id');
       $empresa = Empresas::find($id);
       return (new EmpresasResource($empresa))->response();
-      /*$id = $request->input('id');
-
-      $empresa = Empresas::find($id);
-
-      return (new EmpresasResource($empresa))->response();*/
     }
 
     public function update(Request $request) {

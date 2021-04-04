@@ -23,5 +23,5 @@ Route::get('/', function () {
  * Datos Faker
  */
 Route::get('empresa', function () {
-    return App\Models\Empresa::factory()->count(10)->create();
+    return App\Models\Empresas::factory()->count(10)->create();
 });

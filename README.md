@@ -1,3 +1,95 @@
+# Instructivo.
+
+## Precondiciones.
+
+* No debe estar ocupado el puerto 80.
+
+Repositorio:
+
+* https://github.com/goviedo/enviame.git
+
+
+# Ejercicio 1.
+
+
+Luego, en la carpeta raiz del proyecto, ejecutamos la instrucción:
+
+* docker-compose up -d
+
+# Ejercicio 2.
+
+**Para la creación de datos Fake**, Se accede a la ruta local:
+
+* http://localhost/empresa
+
+**CRUD**
+
+Se sujiere utilizar Postaman:
+
+* GET: http://localhost/api/empresas
+* POST: http://localhost/api/empresas con key nombre y valor Unimarc por ejemplo.
+* GET: Para 1 empresa utilizar:
+  * http://localhost/api/empresa?id=1
+* UPDATE: http://localhost/api/empresas?id=1&nombre=Los Canarios
+* DELETE: http://localhost/api/empresas?id=40
+
+Notar que existan los id para la eliminación y la actualización.
+
+
+# Fibonacci. Ejercicio 5.
+
+En la carpeta raiz de github, existe una carpeta llamada serie-fibonacci.
+Al ejecutar 
+
+```
+node fb.js
+
+```
+
+URL Ayuda: https://medium.com/codeinsights/starting-parallel-programming-in-node-js-with-napa-js-ef80e20ec6c2
+
+Intentara encontrar entre los 1000 numeros fibonnacci, quien tenga 1000 divisores.
+
+# DB. Ejercicio 7.
+
+```
+CREATE TABLE countries ( id int(10) unsigned NOT NULL AUTO_INCREMENT, continent_id int(11) NOT NULL, name varchar(25) NOT NULL, PRIMARY KEY (id) );
+
+CREATE TABLE continents ( id int(10) unsigned NOT NULL AUTO_INCREMENT, name varchar(25) NOT NULL, anual_adjustment int(11) NOT NULL, PRIMARY KEY (id) );
+
+CREATE TABLE employees ( id int(10) unsigned NOT NULL AUTO_INCREMENT, country_id int(11) NOT NULL, first_name varchar(25) NOT NULL, last_name varchar(25) NOT NULL, salary int(11) NOT NULL, PRIMARY KEY (id) );
+
+insert into continents values (null, 'América', 4); insert into continents values (null, 'Europa', 5); insert into continents values (null, 'Asia', 6); insert into continents values (null, 'Oceanía', 6); insert into continents values (null, 'Africa', 5);
+
+insert into countries values (null, 1, 'Chile'); insert into countries values (null, 1, 'Argentina'); insert into countries values (null, 1, 'Canadá'); insert into countries values (null, 1, 'Colombia'); insert into countries values (null, 2, 'Alemania'); insert into countries values (null, 2, 'Francia'); insert into countries values (null, 2, 'España'); insert into countries values (null, 2, 'Grecia'); insert into countries values (null, 3, 'India'); insert into countries values (null, 3, 'Japón'); insert into countries values (null, 3, 'Corea del Sur'); insert into countries values (null, 4, 'Australia');
+
+insert into employees values (null, 1, 'Pedro', 'Rojas', 2000); insert into employees values (null, 2, 'Luciano', 'Alessandri', 2100); insert into employees values (null, 3, 'John', 'Carter', 3050); insert into employees values (null, 4, 'Alejandra', 'Benavides', 2150); insert into employees values (null, 5, 'Moritz', 'Baring', 6000); insert into employees values (null, 6, 'Thierry', 'Henry', 5900); insert into employees values (null, 7, 'Sergio', 'Ramos', 6200); insert into employees values (null, 8, 'Nikoleta', 'Kyriakopulu', 7000); insert into employees values (null, 9, 'Aamir', 'Khan', 2000); insert into employees values (null, 10, 'Takumi', 'Fujiwara', 5000); insert into employees values (null, 11, 'Heung-min', 'Son', 5100); insert into employees values (null, 12, 'Peter', 'Johnson', 6100);
+
+```
+
+El select para calcular el reajuste es como sigue:
+
+```
+select e.first_name, e.last_name, e.salary, cont.anual_adjustment,
+
+       case
+           when e.salary <= 5000 THEN ROUND((e.salary*cont.anual_adjustment/100)+e.salary,0)
+            ELSE e.salary
+        END
+                as adjustment_salary,
+       if(e.salary<=5000,'YES','NO') as readjustment,
+
+       c.name, cont.name
+from employees e inner join countries c on e.country_id = c.id inner join continents cont on c.continent_id = cont.id;
+```
+
+
+**NOTA**
+
+Ejercicio puede estar pendiente, porque si bien funciona, toma un tiempo extremo ejecutarlo, por lo tanto se necesita una ejecucion en paralelo para usar todos los workes disponibles de la maquina.
+ 
+# Documentación de Generación de la APP con Laravel.
+
 # Supuestos.
 
 * Se trabaja con sistema operativo Linux.
@@ -107,59 +199,8 @@ Con Postman pueden generar, segun el verbo HTTP, ejemplos.
 * DELETE (Eliminar una empresa): http://localhost/api/empresas
   * key: id, value: <id-eliminar>
 
-# Fibonacci. Ejercicio 5.
 
-En la carpeta raiz de github, existe una carpeta llamada serie-fibonacci.
-Al ejecutar 
-
-```
-node fb.js
-
-```
-
-URL Ayuda: https://medium.com/codeinsights/starting-parallel-programming-in-node-js-with-napa-js-ef80e20ec6c2
-
-Intentara encontrar entre los 1000 numeros fibonnacci, quien tenga 1000 divisores.
-
-# DB. Ejercicio 7.
-
-```
-CREATE TABLE countries ( id int(10) unsigned NOT NULL AUTO_INCREMENT, continent_id int(11) NOT NULL, name varchar(25) NOT NULL, PRIMARY KEY (id) );
-
-CREATE TABLE continents ( id int(10) unsigned NOT NULL AUTO_INCREMENT, name varchar(25) NOT NULL, anual_adjustment int(11) NOT NULL, PRIMARY KEY (id) );
-
-CREATE TABLE employees ( id int(10) unsigned NOT NULL AUTO_INCREMENT, country_id int(11) NOT NULL, first_name varchar(25) NOT NULL, last_name varchar(25) NOT NULL, salary int(11) NOT NULL, PRIMARY KEY (id) );
-
-insert into continents values (null, 'América', 4); insert into continents values (null, 'Europa', 5); insert into continents values (null, 'Asia', 6); insert into continents values (null, 'Oceanía', 6); insert into continents values (null, 'Africa', 5);
-
-insert into countries values (null, 1, 'Chile'); insert into countries values (null, 1, 'Argentina'); insert into countries values (null, 1, 'Canadá'); insert into countries values (null, 1, 'Colombia'); insert into countries values (null, 2, 'Alemania'); insert into countries values (null, 2, 'Francia'); insert into countries values (null, 2, 'España'); insert into countries values (null, 2, 'Grecia'); insert into countries values (null, 3, 'India'); insert into countries values (null, 3, 'Japón'); insert into countries values (null, 3, 'Corea del Sur'); insert into countries values (null, 4, 'Australia');
-
-insert into employees values (null, 1, 'Pedro', 'Rojas', 2000); insert into employees values (null, 2, 'Luciano', 'Alessandri', 2100); insert into employees values (null, 3, 'John', 'Carter', 3050); insert into employees values (null, 4, 'Alejandra', 'Benavides', 2150); insert into employees values (null, 5, 'Moritz', 'Baring', 6000); insert into employees values (null, 6, 'Thierry', 'Henry', 5900); insert into employees values (null, 7, 'Sergio', 'Ramos', 6200); insert into employees values (null, 8, 'Nikoleta', 'Kyriakopulu', 7000); insert into employees values (null, 9, 'Aamir', 'Khan', 2000); insert into employees values (null, 10, 'Takumi', 'Fujiwara', 5000); insert into employees values (null, 11, 'Heung-min', 'Son', 5100); insert into employees values (null, 12, 'Peter', 'Johnson', 6100);
-
-```
-
-El select para calcular el reajuste es como sigue:
-
-```
-select e.first_name, e.last_name, e.salary, cont.anual_adjustment,
-
-       case
-           when e.salary <= 5000 THEN ROUND((e.salary*cont.anual_adjustment/100)+e.salary,0)
-            ELSE e.salary
-        END
-                as adjustment_salary,
-       if(e.salary<=5000,'YES','NO') as readjustment,
-
-       c.name, cont.name
-from employees e inner join countries c on e.country_id = c.id inner join continents cont on c.continent_id = cont.id;
-```
-
-
-**NOTA**
-
-Ejercicio puede estar pendiente, porque si bien funciona, toma un tiempo extremo ejecutarlo, por lo tanto se necesita una ejecucion en paralelo para usar todos los workes disponibles de la maquina.
- 
-## Notas
+# Notas
 
 * Mysql fallo al iniciar en la version latest y en la 5.2.X, entonces, para simplificar, usamos postgres.
 * Lo anterior implica tambien cambiar configuraciones de instalacion de la app en el dockerfile para que incluya el pdo para postgres.
