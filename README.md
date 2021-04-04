@@ -16,7 +16,7 @@ Luego, en la carpeta raiz del proyecto, ejecutamos la instrucción:
 
 * docker-compose up -d
 
-# Ejercicio 2.
+# Ejercicio 2. FAKE y CRUD.
 
 **Para la creación de datos Fake**, Se accede a la ruta local:
 
@@ -35,6 +35,17 @@ Se sujiere utilizar Postaman:
 
 Notar que existan los id para la eliminación y la actualización.
 
+# Ejercicio 3.
+
+
+# Ejercicio 4. Consumo API Enviame.
+
+**Nota**
+
+* cd node-api-call
+* node app.js
+* Ejecutar en el browser: http://localhost:3000
+
 
 # Fibonacci. Ejercicio 5.
 
@@ -49,6 +60,12 @@ node fb.js
 URL Ayuda: https://medium.com/codeinsights/starting-parallel-programming-in-node-js-with-napa-js-ef80e20ec6c2
 
 Intentara encontrar entre los 1000 numeros fibonnacci, quien tenga 1000 divisores.
+
+# Ejercicio 6. Tiempo de entrega en días.
+
+* cd tiempo-entrega-dias
+* node index.js 7 
+* donde 7 es la cantidad de datos aleatorios a visualizar.
 
 # DB. Ejercicio 7.
 
