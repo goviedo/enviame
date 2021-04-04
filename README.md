@@ -37,6 +37,20 @@ Notar que existan los id para la eliminación y la actualización.
 
 # Ejercicio 3.
 
+Para este ejercicio, le pediría al negocio que me diera las palabras por separado,
+generar una división de cuales son las palabras o cadenas de texto que son iguales
+se complejiza. Si las palabras las tenemos separadas, entonces solo basta con recorrer
+éstas y aplicar el algoritmos de palíndrome y se encuentran.
+
+Separando las palabras se aplica algoritmo de palindrome por palabra y se obtienen cuales
+son las cadenas de texto al reves y al derecho de forma mucho más sencilla.
+
+Nota: Disponible en la carpeta raiz, dentro del directorio palindromes.
+
+Se ejecuta como: node palindromes.js olo
+
+Donde olo es la palabra a encontrar como palindrome.
+
 
 # Ejercicio 4. Consumo API Enviame.
 
@@ -60,6 +74,13 @@ node fb.js
 URL Ayuda: https://medium.com/codeinsights/starting-parallel-programming-in-node-js-with-napa-js-ef80e20ec6c2
 
 Intentara encontrar entre los 1000 numeros fibonnacci, quien tenga 1000 divisores.
+
+
+**NOTA**
+
+* Toma un tiempo extremo ejecutarlo, por lo tanto se necesita una ejecucion en paralelo para usar todos los workes disponibles de la maquina. Por motivos de tiempo
+no pude realizar la prueba en paralelo.
+ 
 
 # Ejercicio 6. Tiempo de entrega en días.
 
@@ -100,11 +121,6 @@ select e.first_name, e.last_name, e.salary, cont.anual_adjustment,
 from employees e inner join countries c on e.country_id = c.id inner join continents cont on c.continent_id = cont.id;
 ```
 
-
-**NOTA**
-
-Ejercicio puede estar pendiente, porque si bien funciona, toma un tiempo extremo ejecutarlo, por lo tanto se necesita una ejecucion en paralelo para usar todos los workes disponibles de la maquina.
- 
 # Documentación de Generación de la APP con Laravel.
 
 # Supuestos.
@@ -217,12 +233,12 @@ Con Postman pueden generar, segun el verbo HTTP, ejemplos.
   * key: id, value: <id-eliminar>
 
 
-# Notas
+# Notas de mi desarrollo finales. Como conclusión.
 
 * Mysql fallo al iniciar en la version latest y en la 5.2.X, entonces, para simplificar, usamos postgres.
 * Lo anterior implica tambien cambiar configuraciones de instalacion de la app en el dockerfile para que incluya el pdo para postgres.
 * Luego en Debian no existian candidatos para pdo-pgsql en laravel.
 * Forzamos la reinstalacion con la version de mysql 5.7.22
-* Lidiar con el error empty continuation line in Dockerfile
+* Lidiar con el error "empty continuation line" in Dockerfile
 * composer en laravel me obligo a subir a la version php 7.3 y tuve que sacar la extensión zip por fallos en la compilacion.
 
